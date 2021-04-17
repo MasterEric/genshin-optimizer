@@ -1,0 +1,17 @@
+{
+  "page-title": "Genshin Optimizer",
+  "tabs": {
+    "artifacts": "Artifacts",
+    "characters": "Characters",
+    "builds": "Builds",
+    "tools": "Tools"
+  },
+  "social": {
+    "paypal": "Paypal",
+    "patreon": "Patreon",
+    "discord": "Discord"
+  },
+  "loading": "Loading...",
+  "rights-disclaimer": "Genshin Optimizer is not affiliated with or endorsed by miHoYo.",
+  "app-version": "$t(page-title) Version: {{version}}"
+}

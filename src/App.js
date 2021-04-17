@@ -16,6 +16,9 @@ import './App.scss';
 import './Assets/Image.scss';
 import { DatabaseInitAndVerify } from './Database/DatabaseUtil';
 
+import './I18n';
+import {Trans} from 'react-i18next';
+
 const Home = lazy(() => import('./Home/HomeDisplay'))
 const ArtifactDisplay = lazy(() => import('./Artifact/ArtifactDisplay'))
 const CharacterDisplay = lazy(() => import('./Character/CharacterDisplay'))
@@ -31,26 +34,25 @@ function App() {
       <div className="h-100 d-flex flex-column">
         <div id="content" className="flex-grow-1">
           <Navbar bg="dark" variant="dark" expand="md">
-            <Navbar.Brand as={Link} to="/">Genshin Optimizer</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/"><Trans i18nKey="page-title">Genshin Optimizer</Trans></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/artifact">
-                  Artifacts</Nav.Link>
-                <Nav.Link as={Link} to="/character">Characters</Nav.Link>
-                <Nav.Link as={Link} to="/build">Builds</Nav.Link>
-                <Nav.Link as={Link} to="/tools">Tools</Nav.Link>
+                <Nav.Link as={Link} to="/artifact"><Trans i18nKey="ui:tabs.artifacts">Artifacts</Trans></Nav.Link>
+                <Nav.Link as={Link} to="/character"><Trans i18nKey="ui:tabs.characters">Character</Trans></Nav.Link>
+                <Nav.Link as={Link} to="/build"><Trans i18nKey="ui:tabs.builds">Builds</Trans></Nav.Link>
+                <Nav.Link as={Link} to="/tools"><Trans i18nKey="ui:tabs.tools">Tools</Trans></Nav.Link>
                 {process.env.NODE_ENV === "development" && <Nav.Link as={Link} to="/test">TEST</Nav.Link>}
               </Nav>
               <Nav>
                 <Nav.Link href={process.env.REACT_APP_PAYPAL_LINK} target="_blank" rel="noreferrer" onClick={() => ReactGA.outboundLink({ label: "patreon" }, () => { })}>
-                  <span><FontAwesomeIcon icon={faPaypal} className="fa-fw" /> PayPal</span>
+                  <span><FontAwesomeIcon icon={faPaypal} className="fa-fw" /> <Trans i18nKey="ui:social.paypal">PayPal</Trans></span>
                 </Nav.Link>
                 <Nav.Link href={process.env.REACT_APP_PATREON_LINK} target="_blank" rel="noreferrer" onClick={() => ReactGA.outboundLink({ label: "patreon" }, () => { })}>
-                  <span><FontAwesomeIcon icon={faPatreon} className="fa-fw" /> Patreon</span>
+                  <span><FontAwesomeIcon icon={faPatreon} className="fa-fw" /> <Trans i18nKey="ui:social.patreon">Patreon</Trans></span>
                 </Nav.Link>
                 <Nav.Link href={process.env.REACT_APP_DISCORD_LINK} target="_blank" rel="noreferrer" onClick={() => ReactGA.outboundLink({ label: "discord" }, () => { })}>
-                  <span><FontAwesomeIcon icon={faDiscord} className="fa-fw" /> Discord</span>
+                  <span><FontAwesomeIcon icon={faDiscord} className="fa-fw" /> <Trans i18nKey="ui:social.discord">Discord</Trans></span>
                 </Nav.Link>
                 <Nav.Link as={Link} to="/setting"><FontAwesomeIcon icon={faCog} /></Nav.Link>
               </Nav>
@@ -59,7 +61,7 @@ function App() {
           <Suspense fallback={<Container>
             <Card bg="darkcontent" text="lightfont" className="mt-2">
               <Card.Body>
-                <h3 className="text-center">Loading... <Spinner animation="border" variant="primary" /></h3>
+                <h3 className="text-center"><Trans i18nKey="ui:loading">Loading...</Trans><Spinner animation="border" variant="primary"/></h3>
               </Card.Body>
             </Card></Container>}>
             <Switch>
@@ -78,10 +80,10 @@ function App() {
         <Nav id="footer" className="bg-dark">
           <Row className="w-100 ml-0 mr-0 mb-2 text-light d-flex justify-content-between">
             <Col xs={"auto"}>
-              <span > <small>Genshin Optimizer is not affiliated with or endorsed by miHoYo. </small></span>
+              <span><small><Trans i18nKey="ui:rights-disclaimer">Genshin Optimizer is not affiliated with or endorsed by miHoYo.</Trans></small></span>
             </Col>
             <Col xs={"auto"}>
-              <span  ><small > Genshin Optimizer Ver:{version} </small></span>
+              <span><small ><Trans i18nKey="ui:app-version" values={{ version: version }}>Genshin Optimizer Version: {{version}}</Trans></small></span>
             </Col>
           </Row>
         </Nav>

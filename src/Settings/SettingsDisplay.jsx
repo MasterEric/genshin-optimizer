@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react"
 import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap"
 import ReactGA from 'react-ga'
+import { Trans } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import ArtifactDatabase from "../Database/ArtifactDatabase"
 import CharacterDatabase from "../Database/CharacterDatabase"
 import { clearDatabase, createDatabaseObj, DatabaseInitAndVerify, loadDatabaseObj } from "../Database/DatabaseUtil"
@@ -9,10 +11,26 @@ DatabaseInitAndVerify()
 export default function SettingsDisplay() {
   const [, updateState] = useState()
   const forceUpdate = useCallback(() => updateState({}), []);
+  const { i18n } = useTranslation(["ui", "settings"], { useSuspense: false });
   ReactGA.pageview('/setting')
+
+  const onSetLanguage = (lang) => () => {
+    i18n.changeLanguage(lang);
+  }
+
   return <Container>
     <Card bg="darkcontent" text="lightfont" className="mt-2">
-      <Card.Header>Database management</Card.Header>
+      <Card.Header><Trans i18nKey="settings:ui-settings" /></Card.Header>
+      <Card.Body>
+        {/* TODO: Make this a dropdown. */}
+        <Row>
+          <Col xs="auto"><Button onClick={onSetLanguage('en')}><Trans i18nKey="languages:en" /></Button></Col>
+          <Col xs="auto"><Button onClick={onSetLanguage('fr')}><Trans i18nKey="languages:fr" /></Button></Col>
+        </Row>
+      </Card.Body>
+    </Card>
+    <Card bg="darkcontent" text="lightfont" className="mt-2">
+      <Card.Header><Trans i18nKey="settings:database-management" /></Card.Header>
       <Card.Body>
         <DownloadCard forceUpdate={forceUpdate} />
         <UploadCard forceUpdate={forceUpdate} />
@@ -36,8 +54,8 @@ function download(JSONstr, filename = "data.json") {
   }
 }
 
-function deleteDatabase() {
-  if (!window.confirm("Are you sure you want to delete your database? All existing characters and artifacts will be deleted.")) return
+function deleteDatabase(t) {
+  if (!window.confirm(t("settings:dialog.delete-database"))) return
   clearDatabase()
 }
 function copyToClipboard() {
@@ -48,24 +66,26 @@ function DownloadCard({ forceUpdate }) {
   const numChar = CharacterDatabase.getIdList().length
   const numArt = ArtifactDatabase.getIdList().length
   const downloadValid = Boolean(numChar || numArt)
+  const { t } = useTranslation("settings", { useSuspense: false });
   const deleteDB = () => {
-    deleteDatabase();
+    deleteDatabase(t);
     forceUpdate()
   }
   return <Card bg="lightcontent" text="lightfont" className="mb-3">
-    <Card.Header>Database Download</Card.Header>
+    <Card.Header><Trans i18nKey="settings:database-download" /></Card.Header>
     <Card.Body>
       <Row className="mb-2">
-        <Col xs={12} md={6}><h6>Number of Characters: <b>{numChar}</b></h6></Col>
-        <Col xs={12} md={6}><h6>Number of artifacts: <b>{numArt}</b></h6></Col>
+        {/* Translations including nested tags like <strong> or <b> are a pain, since they require a different component. */}
+        <Col xs={12} md={6}><h6><Trans i18nKey="settings:chars-stored" count={numChar}><b>{{ count: numChar }}</b> Characters Stored</Trans></h6></Col>
+        <Col xs={12} md={6}><h6><Trans i18nKey="settings:artis-stored" count={numArt}><b>{{ count: numArt }}</b> Artifacts Stored</Trans></h6></Col>
       </Row>
-      <small>Notes: any data within the "Tools" page, e.g. Resin amount/timer, are not part of the downloaded database.</small>
+      <small><Trans i18nKey="settings:database-disclaimer" /></small>
     </Card.Body>
     <Card.Footer>
       <Row>
-        <Col xs="auto"><Button disabled={!downloadValid} onClick={() => download(JSON.stringify(createDatabaseObj()))}>Download</Button></Col>
-        <Col ><Button disabled={!downloadValid} variant="info" onClick={copyToClipboard}>Copy to clipboard</Button></Col>
-        <Col xs="auto"><Button disabled={!downloadValid} variant="danger" onClick={deleteDB} >Delete database</Button></Col>
+        <Col xs="auto"><Button disabled={!downloadValid} onClick={() => download(JSON.stringify(createDatabaseObj()))}><Trans i18nKey="settings:button.download" /></Button></Col>
+        <Col ><Button disabled={!downloadValid} variant="info" onClick={copyToClipboard}><Trans i18nKey="settings:button.copy-to-clipboard" /></Button></Col>
+        <Col xs="auto"><Button disabled={!downloadValid} variant="danger" onClick={deleteDB} ><Trans i18nKey="settings:button.delete-database" /></Button></Col>
       </Row>
     </Card.Footer>
   </Card>
@@ -86,6 +106,7 @@ function replaceDatabase(obj, cb = () => { }) {
 function UploadCard({ forceUpdate }) {
   const [data, setdata] = useState("")
   const [filename, setfilename] = useState("")
+  const { t } = useTranslation("settings", { useSuspense: false });
   let error = ""
   let numChar, numArt, dataObj
   if (data) {
@@ -112,27 +133,27 @@ function UploadCard({ forceUpdate }) {
     readFile(file, setdata)
   }
   return <Card bg="lightcontent" text="lightfont">
-    <Card.Header>Database Upload</Card.Header>
+    <Card.Header><Trans i18nKey="settings:database-upload" /></Card.Header>
     <Card.Body>
       <Row className="mb-2">
         <Form.File
           className="mb-2"
-          label={filename ? filename : "Upload your JSON file here"}
+          label={filename ? filename : t('settings:database-upload-hint-upload')}
           onChange={onUpload}
           custom
           accept=".json"
         />
-        <h6>...or Paste your data below...</h6>
+        <h6><Trans i18nKey="settings:database-upload-hint-paste" /></h6>
         <textarea className="w-100 text-monospace" value={data} onChange={e => setdata(e.target.value)} style={{ minHeight: "10em" }} />
       </Row>
       {dataValid && <Row>
-        <Col xs={12} md={6}><h6>Number of Characters: <b>{numChar}</b></h6></Col>
-        <Col xs={12} md={6}><h6>Number of artifacts: <b>{numArt}</b></h6></Col>
+        <Col xs={12} md={6}><h6><Trans i18nKey="settings:chars-stored" count={numChar}><b>{{ count: numChar }}</b> Characters Stored</Trans></h6></Col>
+        <Col xs={12} md={6}><h6><Trans i18nKey="settings:artis-stored" count={numArt}><b>{{ count: numArt }}</b> Artifacts Stored</Trans></h6></Col>
       </Row>}
       {Boolean(data && (error || !dataValid)) && <Alert variant="danger">{error ? error : "Unable to parse character & artifact data from file."}</Alert>}
     </Card.Body>
     <Card.Footer>
-      <Button variant={dataValid ? "success" : "danger"} disabled={!dataValid} onClick={replaceDB}>Replace database</Button>
+      <Button variant={dataValid ? "success" : "danger"} disabled={!dataValid} onClick={replaceDB}><Trans i18nKey="settings:replace-database" /></Button>
     </Card.Footer>
   </Card>
 }
