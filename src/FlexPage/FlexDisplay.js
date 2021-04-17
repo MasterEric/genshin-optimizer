@@ -8,6 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
+import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
+
 export default function TestDisplay() {
   const location = useLocation()
   const searchStr = location.search
@@ -28,6 +31,7 @@ export default function TestDisplay() {
 }
 function Display({ character }) {
   const [toast, settoast] = useState(false)
+  const {t} = useTranslation();
   const url = window.location.href
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url)
@@ -41,7 +45,7 @@ function Display({ character }) {
       top: 50,
       right: 50,
     }}>
-      <Toast.Header><b className="mr-auto">Genshin Optimizer</b></Toast.Header>
+      <Toast.Header><b className="mr-auto"><Trans t={t} i18nKey="page-title">Genshin Optimizer</Trans></b></Toast.Header>
       <Toast.Body>URL copied to clipboard.</Toast.Body>
     </Toast>
     <Card bg="darkcontent" text="lightfont" className="mb-2">

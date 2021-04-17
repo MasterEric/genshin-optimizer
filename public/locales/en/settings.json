@@ -1,6 +1,9 @@
 {
   "ui-settings": "UI Settings",
 
+  "select-language": "Select Language",
+  "language-format": "Language: {{language}}",
+
   "database-management": "Database Management",
 
   "database-download": "Database Download",

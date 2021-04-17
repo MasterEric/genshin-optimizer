@@ -11,6 +11,22 @@
     "patreon": "Patreon",
     "discord": "Discord"
   },
+  "game": {
+    "min-level": "Min Level",
+    "max-level": "Max Level",
+    "artifact-set": "Artifact Set",
+    "rarity": "Rarity",
+    "main-stat": "Main Stat",
+    "slot": "Slot",
+    "level": "Level",
+    "substat-format": "Substat {{value}}",
+    "no-substat": "No Substat"
+  },
+  "unselect": "Unselect",
+  "ascending": "Ascending",
+  "descending": "Descending",
+  "sort-by-format": "Sort By: {{value}}",
+  "show-me-how": "Show Me How!",
   "loading": "Loading...",
   "rights-disclaimer": "Genshin Optimizer is not affiliated with or endorsed by miHoYo.",
   "app-version": "$t(page-title) Version: {{version}}"

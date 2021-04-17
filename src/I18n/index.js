@@ -3,6 +3,22 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
+// Probably a way to auto-populate this.
+export const languageCodeList = [
+  "en",
+  "zh",
+  "ja",
+  "ko",
+  "fr",
+  "de",
+  "id",
+  "pt",
+  "ru",
+  "es",
+  "th",
+  "vi",
+];
+
 /**
  * @see: https://www.i18next.com/translation-function/essentials
  * @see: https://react.i18next.com/latest/using-with-hooks
@@ -27,6 +43,8 @@ i18n
 
     // List all translation namespaces.
     ns: [
+      "artifact",
+      "faq",
       "home",
       "languages",
       "settings",
